@@ -1,0 +1,1 @@
+{"version":3,"file":"isRegExp.js","sourceRoot":"","sources":["../../src/utils/isRegExp.ts"],"names":[],"mappings":"AAAA,MAAM,CAAC,OAAO,UAAU,QAAQ,CAAC,KAAa;IAC5C,OAAO,KAAK,IAAI,MAAM,CAAC,SAAS,CAAC,QAAQ,CAAC,IAAI,CAAC,KAAK,CAAC,KAAK,iBAAiB,CAAC;AAC9E,CAAC"}
