@@ -1,5 +1,5 @@
 {
-  "name": "react-keep-alive",
+  "name": "freya-keep-alive",
   "version": "2.0.2",
   "description": "Package will allow components to maintain their status, to avoid repeated re-rendering.",
   "author": "Shen Chang",
