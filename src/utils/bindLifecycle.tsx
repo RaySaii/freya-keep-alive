@@ -11,7 +11,7 @@ export const bindLifecycleTypeName = '$$bindLifecycle'
 export default function bindLifecycle<P = any>(Component: React.ComponentClass<P>) {
   const WrappedComponent = (Component as any).WrappedComponent || (Component as any).wrappedComponent || Component
 
-  const {
+  let {
     componentDidMount = noop,
     componentDidUpdate = noop,
     componentDidActivate = noop,
@@ -27,15 +27,19 @@ export default function bindLifecycle<P = any>(Component: React.ComponentClass<P
 
 
   componentDidActivate = function () {
-    if (this.props._routerStore.status == 'activate' || init) {
+    // @ts-ignore
+    if ((this as any).props._routerStore.status == 'activate' || init) {
       oldActivate()
+      // @ts-ignore
       this.props._routerStore.status = ''
     }
   }
 
   componentWillUnactivate = function () {
+    // @ts-ignore
     if (this.props._routerStore.status == 'unActivate') {
       oldUnactivate()
+      // @ts-ignore
       this.props._routerStore.status = ''
     }
   }
