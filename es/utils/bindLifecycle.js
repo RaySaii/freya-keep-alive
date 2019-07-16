@@ -29,14 +29,30 @@ export var bindLifecycleTypeName = '$$bindLifecycle';
 export default function bindLifecycle(Component) {
     var WrappedComponent = Component.WrappedComponent || Component.wrappedComponent || Component;
     var _a = WrappedComponent.prototype, _b = _a.componentDidMount, componentDidMount = _b === void 0 ? noop : _b, _c = _a.componentDidUpdate, componentDidUpdate = _c === void 0 ? noop : _c, _d = _a.componentDidActivate, componentDidActivate = _d === void 0 ? noop : _d, _e = _a.componentWillUnactivate, componentWillUnactivate = _e === void 0 ? noop : _e, _f = _a.componentWillUnmount, componentWillUnmount = _f === void 0 ? noop : _f, _g = _a.shouldComponentUpdate, shouldComponentUpdate = _g === void 0 ? noop : _g;
+    var oldActivate = componentDidActivate;
+    var oldUnactivate = componentWillUnactivate;
+    var init = true;
+    componentDidActivate = function () {
+        if (this.props._routerStore.status == 'activate' || init) {
+            oldActivate();
+            this.props._routerStore.status = '';
+        }
+    };
+    componentWillUnactivate = function () {
+        if (this.props._routerStore.status == 'unActivate') {
+            oldUnactivate();
+            this.props._routerStore.status = '';
+        }
+    };
     WrappedComponent.prototype.componentDidMount = function () {
         var _this = this;
         componentDidMount.call(this);
         this._needActivate = false;
         var _a = this.props, _b = _a._container, identification = _b.identification, eventEmitter = _b.eventEmitter, activated = _b.activated, keepAlive = _a.keepAlive;
         // Determine whether to execute the componentDidActivate life cycle of the current component based on the activation state of the KeepAlive components
-        if (!activated && keepAlive !== false) {
+        if (!activated && keepAlive !== false || init) {
             componentDidActivate.call(this);
+            init = false;
         }
         eventEmitter.on([identification, COMMAND.ACTIVATE], this._bindActivate = function () { return _this._needActivate = true; }, true);
         eventEmitter.on([identification, COMMAND.UNACTIVATE], this._bindUnactivate = function () {
