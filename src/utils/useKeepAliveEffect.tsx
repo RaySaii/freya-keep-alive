@@ -52,7 +52,7 @@ export default function useKeepAliveEffect(effect: React.EffectCallback) {
     );
     return () => {
       if (effectResult && !unmounted) {
-        effectResult();
+        effectResult();˚
       }
       eventEmitter.off(
         [identification, COMMAND.ACTIVATE],
