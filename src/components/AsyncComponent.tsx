@@ -12,9 +12,17 @@ interface IState {
 }
 
 export default class AsyncComponent extends React.Component<IProps, IState> {
-  public state = {
-    component: null,
-  };
+
+  public state:any ={}
+
+  constructor(props:any){
+    super(props)
+    this.state={
+      component:this.props.children
+    }
+  }
+
+
 
   /**
    * Force update child nodes
@@ -49,7 +57,7 @@ export default class AsyncComponent extends React.Component<IProps, IState> {
 
   public componentDidMount() {
     const {children} = this.props;
-    Promise.resolve().then(() => this.setState({component: children}));
+    this.setState({component: children})
   }
 
   public componentDidUpdate() {
