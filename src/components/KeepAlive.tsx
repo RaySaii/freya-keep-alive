@@ -14,7 +14,7 @@ interface IKeepAliveInnerProps extends IKeepAliveProps {
   _container: any;
 }
 
-class KeepAlive extends React.PureComponent<IKeepAliveInnerProps> {
+class KeepAlive extends React.Component<IKeepAliveInnerProps> {
   private bindUnmount: (() => void) | null = null;
 
   private bindUnactivate: (() => void) | null = null;
