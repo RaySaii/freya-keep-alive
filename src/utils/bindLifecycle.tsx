@@ -5,6 +5,7 @@ import { warn } from './debug'
 import { COMMAND } from './keepAliveDecorator'
 import withIdentificationContextConsumer from './withIdentificationContextConsumer'
 import getDisplayName from './getDisplayName'
+import shallowEqual from './shallowEqual'
 
 export const bindLifecycleTypeName = '$$bindLifecycle'
 
@@ -90,7 +91,7 @@ export default function bindLifecycle<P = any>(Component: React.ComponentClass<P
       this.forceUpdate()
       return false
     }
-    return shouldComponentUpdate.call(this, ...args) || true
+    return shouldComponentUpdate.call(this, ...args) ||!shallowEqual(this.props,args[0])
   }
 
   WrappedComponent.prototype.componentDidUpdate = function () {
@@ -123,7 +124,7 @@ export default function bindLifecycle<P = any>(Component: React.ComponentClass<P
       this._bindUnmount,
     )
   }
-
+  let _container={}
   const BindLifecycleHOC = withIdentificationContextConsumer(
     ({
        forwardRef,
@@ -139,17 +140,15 @@ export default function bindLifecycle<P = any>(Component: React.ComponentClass<P
         warn('[React Keep Alive] You should not use bindLifecycle outside a <KeepAlive>.')
         return null
       }
-
+      Object.assign(_container,{identification,
+          eventEmitter,
+          activated,
+          keepAlive})
       return (
         <Component
           {...wrapperProps}
           ref={forwardRef || noop}
-          _container={{
-            identification,
-            eventEmitter,
-            activated,
-            keepAlive,
-          }}
+          _container={_container}
         />
       )
     },
